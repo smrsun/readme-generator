@@ -1,7 +1,7 @@
-// TODO: Include packages needed for this application
+// packages needed for this application
 const inquirer = require('inquirer');
 const fs = require('fs');
-const generateMarkdown = require('./readme-generator/utils/generateMarkdown.js');
+const generateMarkdown = require('./utils/generateMarkdown.js');
 
 //  array of questions for user input
 const questions = [
@@ -34,7 +34,7 @@ const questions = [
   {
     type: 'input',
     message: 'What command should be run to install dependencies',
-    name: 'command',
+    name: 'installation',
   },
   {
     type: 'input',
@@ -49,7 +49,7 @@ const questions = [
   {
     type: 'input',
     message: 'What does the user need to know about contributing to the repo?',
-    name: 'contribution',
+    name: 'contributing',
   },
 ];
 
@@ -63,11 +63,16 @@ const writeToFile = (fileName, data) => {
   });
 };
 
-// TODO: Create a function to initialize app
+// Created a function to initialize app
 const init = () => {
-  inquirer.prompt(questions).then(answers);
-  const readmeInfo = generateMarkdown(answers);
-  writeToFile('README.md', readmeInfo);
+  inquirer
+    .prompt(questions)
+    .then((answers) => {
+      console.log('Generating README file ...');
+      const readmeInfo = generateMarkdown(answers);
+      writeToFile('README.md', readmeInfo);
+    })
+    .catch((err) => console.log(err));
 };
 
 // Function call to initialize app
